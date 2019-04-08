@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import math as math
+import math 
 valores = []
 x = -200
 for i in range(-2000,2000):
