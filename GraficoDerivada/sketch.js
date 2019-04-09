@@ -4,12 +4,13 @@ let h = 400;
 
 function setup() {
   createCanvas(w,h);
-  xScaleSlide = createSlider(0, 10, 10, .001);
-  yScaleSlide = createSlider(0, 10, 1, .001);
+  xScaleSlide = createSlider(0, 100, 10, .001);
+  yScaleSlide = createSlider(0, 100, 10, .001);
+  translate(w / 2, h / 2);
 } 
-let x = -20;
+let x = -3;
 let y = 0;
-let timeStep = 0.2;
+let timeStep = 0.008;
 
 xAxisPoints = [];
 yAxisPoints = [];
@@ -18,31 +19,31 @@ yAxisPoints = [];
 
 
 function drawGraph(){
-  //background(144);
   textSize(5.8);
-  let ScaledW = w * xScaleSlide.value();
-  let ScaledH = h * yScaleSlide.value();
-  print(ScaledH);
+  fill(0)
   line(-w / 2, 0, w / 2, 0);
-  for(let i = -(ScaledW/2); i < ScaledW/2; i += (20 / xScaleSlide.value())){
-    text(i, i * xScaleSlide.value(), 0); 
+  for(let i = -(w/2); i < w/2; i += (20 / xScaleSlide.value())){
+    text(i.toFixed(1), i * xScaleSlide.value(), 0); 
   }
   line(0, -h / 2, 0, h / 2);
-  for(let i = -(ScaledH/2); i < ScaledH/2; i += (20 / yScaleSlide.value())){
-    text(-i, 0, i * yScaleSlide.value()); 
+  for(let i = -(h/2); i < h/2; i += (20 / yScaleSlide.value())){
+    text(-i.toFixed(1), 0, i * yScaleSlide.value()); 
   }
 }
 
 function draw() {
   translate(w / 2, h / 2);
-  
+  background(144);
   drawGraph();
-  if (xAxisPoints.length <= 200) {
-    y = -2 * (x ** 2) + x * 20 + 100;
-    //y = 5*x**3 + 9*x**2;
-    x += timeStep;
-    xAxisPoints.push(x);
-    yAxisPoints.push(y);
+  
+  if (xAxisPoints.length <= 20000) {
+    for (let i = 0; i < 400; i++) {
+      y = 5*x**3 + 9*x**2;
+      //y = -2 * (x ** 2) + 2 * x + 1;
+      x += timeStep;
+      xAxisPoints.push(x);
+      yAxisPoints.push(y);
+    }
   }
   beginShape();
   noFill();
