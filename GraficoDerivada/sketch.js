@@ -5,17 +5,17 @@ let xScaleSlide;
 let yScaleSlide;
 let fxInput;
 let xI = -20;
-let x = 0;
+let x = xI;
 let y = 0;
 let timeStep = 0.01;
-let fx = "x + 11";
+let fx = "-(x**2) + 4*x + 2";
 xAxisPoints = [];
 yAxisPoints = [];
 
 function setup() {
   createCanvas(w,h);
-  xScaleSlide = createSlider(0, 100, 10, .001);
-  yScaleSlide = createSlider(0, 100, 10, .001);
+  xScaleSlide = createSlider(0, 200, 10, .001);
+  yScaleSlide = createSlider(0, 200, 10, .001);
   fxInput = createInput(fx);
   fxInput.input(fxChange);
   translate(w / 2, h / 2);
@@ -32,22 +32,24 @@ function drawGraph(){
   for(let i = -(h/2); i < h/2; i += (20 / yScaleSlide.value())){
     text(-i.toFixed(1), 0, i * yScaleSlide.value()); 
   }
+  textSize(10);
+  text("y", 10, -(h * .92)/2);
+  text("x", (w * .92)/2,10);
+  text(fx,-250,-150);
 }
 
 function draw() {
   translate(w / 2, h / 2);
   background(144);
-  drawGraph();
-  textSize(10);
-  text(fx,-150,-150);
+  drawGraph();  
   if (xAxisPoints.length <= 10000) {
     print(xAxisPoints.length);
-    for (let i = 0; i < 400; i++) {
+    for (let i = 0; i < 200; i++) {
       try{
         y = eval(fx);
       }
       catch(e){
-        
+        fx = "Texto não pode ser convertido em função!"
       }
       x += timeStep;
       xAxisPoints.push(x);
@@ -72,7 +74,3 @@ function fxChange(){
   xAxisPoints = [];
   yAxisPoints = [];
 }
-
-
-
-
