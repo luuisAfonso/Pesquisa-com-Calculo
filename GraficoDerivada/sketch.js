@@ -1,14 +1,15 @@
 
-let w = 600;
-let h = 400;
+let w = 800;
+let h = 600;
 let xScaleSlide;
 let yScaleSlide;
 let fxInput;
-let xI = -20;
-let x = 0;
+let xI = -40;
+let x = xI;
 let y = 0;
 let timeStep = 0.01;
 let fx = "x + 11";
+let clickFx = "";
 xAxisPoints = [];
 yAxisPoints = [];
 
@@ -20,7 +21,6 @@ function setup() {
   fxInput.input(fxChange);
   translate(w / 2, h / 2);
 } 
-
 function drawGraph(){
   textSize(5.8);
   fill(0);
@@ -39,15 +39,16 @@ function draw() {
   background(144);
   drawGraph();
   textSize(10);
-  text(fx,-150,-150);
-  if (xAxisPoints.length <= 10000) {
+  text(fx,-300,-250);
+  text(clickFx,-300,-260);
+    if (xAxisPoints.length <= 10000) {
     print(xAxisPoints.length);
-    for (let i = 0; i < 400; i++) {
+    for (let i = 0; i < 200; i++) {
       try{
         y = eval(fx);
       }
       catch(e){
-        
+        fx = "texto não pode ser transformado em função matematica!"
       }
       x += timeStep;
       xAxisPoints.push(x);
@@ -71,6 +72,15 @@ function fxChange(){
   y = 0;
   xAxisPoints = [];
   yAxisPoints = [];
+}
+function mouseReleased(){
+  x = (mouseX - w/2) / xScaleSlide.value();
+  print(x)
+  y = eval(fx); 
+  print(y);
+  textSize(10);
+  
+  clickFx = `f(${x}) = ${y}`;
 }
 
 
