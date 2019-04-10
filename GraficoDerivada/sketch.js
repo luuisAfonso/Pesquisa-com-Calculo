@@ -4,11 +4,12 @@ let h = 400;
 let xScaleSlide;
 let yScaleSlide;
 let fxInput;
-let xI = -20;
+let xI = -40;
 let x = xI;
 let y = 0;
 let timeStep = 0.01;
-let fx = "-(x**2) + 4*x + 2";
+let fx = "x + 11";
+let clickFx = "";
 xAxisPoints = [];
 yAxisPoints = [];
 
@@ -19,7 +20,7 @@ function setup() {
   fxInput = createInput(fx);
   fxInput.input(fxChange);
   translate(w / 2, h / 2);
-} 
+}
 
 function drawGraph(){
   textSize(5.8);
@@ -35,14 +36,15 @@ function drawGraph(){
   textSize(10);
   text("y", 10, -(h * .92)/2);
   text("x", (w * .92)/2,10);
-  text(fx,-250,-150);
+  text(fx,-(w/2 * .9) ,-(h/2 * .80));
+  text(clickFx,-(w/2 * .9),-(h/2 * .75));
 }
 
 function draw() {
   translate(w / 2, h / 2);
   background(144);
-  drawGraph();  
-  if (xAxisPoints.length <= 10000) {
+  drawGraph();
+    if (xAxisPoints.length <= 10000) {
     print(xAxisPoints.length);
     for (let i = 0; i < 200; i++) {
       try{
@@ -73,4 +75,13 @@ function fxChange(){
   y = 0;
   xAxisPoints = [];
   yAxisPoints = [];
+}
+
+function mouseReleased(){
+  x = (mouseX - w/2) / xScaleSlide.value();
+  print(x)
+  y = eval(fx); 
+  print(y);
+  textSize(10);
+  clickFx = `f(${x}) = ${y}`;
 }
