@@ -16,6 +16,10 @@ let fDerivadaCode;
 let dxI = -40
 let dx = dxI; 
 let dy = 0;
+let drawDerivada = false;
+let derivadaCheck;
+let allFuncPoints = [];
+
 xAxisPoints = [];
 yAxisPoints = [];
 dxAxisPoints = [];
@@ -25,6 +29,8 @@ function setup() {
   createCanvas(w,h);
   xScaleSlide = createSlider(0, 200, 10, .001);
   yScaleSlide = createSlider(0, 200, 10, .001);
+  derivadaCheck = createCheckbox('Desenhar derivada', false);
+  derivadaCheck.changed(derivadaCheckChange);
   fxInput = createInput(fx);
   fxInput.input(fxChange);
   translate(w / 2, h / 2);
@@ -90,31 +96,33 @@ function draw() {
   endShape();
 
   //calculo da derivada
-  //  if (dxAxisPoints.length <= 10000) {
-  //    print(dxAxisPoints.length);
-  //    for (let i = 0; i < 200; i++) {
-  //      try{
-  //        let scope = {x:dx}
-  //        dy = fDerivadaCode.eval(scope);
-  //      }
-  //      catch(e){
-  //        console.log(e);
-  //      }
-  //      dx += timeStep;
-  //      dxAxisPoints.push(dx);
-  //      dyAxisPoints.push(dy);
-  //    }
-  //  }
-  //  beginShape();
-  //  noFill();
-  //  for (let i = 0; i < dxAxisPoints.length; i++) {
-  //    xScale = xScaleSlide.value();
-  //    yScale = yScaleSlide.value();
-  //    vertex(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
-  //    //point(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
-  //    //point(dxAxisPoints[i] * xScale ,1);
-  //  }
-  //  endShape();
+  if (dxAxisPoints.length <= 10000) {
+    print(dxAxisPoints.length);
+    for (let i = 0; i < 200; i++) {
+      try {
+        let scope = { x: dx }
+        dy = fDerivadaCode.eval(scope);
+      }
+      catch (e) {
+        console.log(e);
+      }
+      dx += timeStep;
+      dxAxisPoints.push(dx);
+      dyAxisPoints.push(dy);
+    }
+  }
+  if (drawDerivada == true) {
+    beginShape();
+    noFill();
+    for (let i = 0; i < dxAxisPoints.length; i++) {
+      xScale = xScaleSlide.value();
+      yScale = yScaleSlide.value();
+      vertex(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
+      //point(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
+      //point(dxAxisPoints[i] * xScale ,1);
+    }
+    endShape();
+  }
 }
 
 function fxChange(){
@@ -128,6 +136,10 @@ function fxChange(){
   dxAxisPoints = [];
   dyAxisPoints = [];
   calcDerivada();
+}
+
+function derivadaCheckChange(){
+    drawDerivada = !drawDerivada;
 }
 
 function calcDerivada(){
