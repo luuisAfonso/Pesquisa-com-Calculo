@@ -96,8 +96,8 @@ function draw() {
   for (let i = 0; i < xAxisPoints.length; i++) {
     xScale = xScaleSlide.value();
     yScale = yScaleSlide.value();
-    //vertex(xAxisPoints[i] * xScale, -yAxisPoints[i] * yScale);
-    point(xAxisPoints[i] * xScale, -yAxisPoints[i] * yScale);
+    vertex(xAxisPoints[i] * xScale, -yAxisPoints[i] * yScale);
+   //point(xAxisPoints[i] * xScale, -yAxisPoints[i] * yScale);
   }
   endShape();
 
@@ -121,8 +121,8 @@ function draw() {
     for (let i = 0; i < dxAxisPoints.length; i++) {
       xScale = xScaleSlide.value();
       yScale = yScaleSlide.value();
-      //vertex(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
-      point(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
+      vertex(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
+      //point(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
       //point(dxAxisPoints[i] * xScale ,1);
     }
     endShape();
