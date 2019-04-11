@@ -18,7 +18,6 @@ let dx = dxI;
 let dy = 0;
 let drawDerivada = false;
 let derivadaCheck;
-let allFuncPoints = [];
 
 xAxisPoints = [];
 yAxisPoints = [];
