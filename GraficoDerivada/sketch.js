@@ -9,10 +9,9 @@ let x = xI;
 let y = 0;
 let timeStep = 0.01;
 let fx = "x^2";
-let clickFx = "";
 let derivada;
 let fxCode;
-let fDerivadaCode;
+let dxCode;
 let dxI = -40
 let dx = dxI; 
 let dy = 0;
@@ -23,6 +22,13 @@ xAxisPoints = [];
 yAxisPoints = [];
 dxAxisPoints = [];
 dyAxisPoints = [];
+
+//TODO
+//Função global de plotagem
+//tangente na função principal
+//auto-zoom
+//circulo apenas com função
+
 
 function setup() {
   createCanvas(w,h);
@@ -52,12 +58,15 @@ function drawGraph(){
   text(fx,-(w/2 * .9) ,-(h/2 * .83));
   text(clickFx,-(w/2 * .9),-(h/2 * .76));
   text(`f'(x) = ${derivada}`,-(w/2 * .9),-(h/2 * .69) )
+  text(clickDx,-(w/2 * .9),-(h/2 * .62));
 }
 
 function draw() {
   translate(w / 2, h / 2);
   background(144);
   drawGraph();
+  //parse da string --> node(math) --> code, posteriormente executado.
+  //try and catch para capturar erros de parse na função.
   try {
     fxNode = math.parse(fx);
   } catch (e) {
@@ -72,11 +81,9 @@ function draw() {
     if (xAxisPoints.length <= 10000) {
     for (let i = 0; i < 200; i++) {
       try{
-        let scope = {x:x}
-        y = fxCode.eval(scope);
+        y = calcFxPoint(fxCode, x)
       }
       catch(e){
-        console.log(e);
         fx = "Texto não pode ser convertido em função!"
       }
       x += timeStep;
@@ -89,8 +96,8 @@ function draw() {
   for (let i = 0; i < xAxisPoints.length; i++) {
     xScale = xScaleSlide.value();
     yScale = yScaleSlide.value();
-    vertex(xAxisPoints[i] * xScale, -yAxisPoints[i] * yScale);
-    //point(xAxisPoints[i] * xScale, -yAxisPoints[i] * yScale);
+    //vertex(xAxisPoints[i] * xScale, -yAxisPoints[i] * yScale);
+    point(xAxisPoints[i] * xScale, -yAxisPoints[i] * yScale);
   }
   endShape();
 
@@ -99,11 +106,9 @@ function draw() {
     print(dxAxisPoints.length);
     for (let i = 0; i < 200; i++) {
       try {
-        let scope = { x: dx }
-        dy = fDerivadaCode.eval(scope);
+        dy = calcFxPoint(dxCode, dx);
       }
       catch (e) {
-        console.log(e);
       }
       dx += timeStep;
       dxAxisPoints.push(dx);
@@ -116,12 +121,18 @@ function draw() {
     for (let i = 0; i < dxAxisPoints.length; i++) {
       xScale = xScaleSlide.value();
       yScale = yScaleSlide.value();
-      vertex(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
-      //point(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
+      //vertex(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
+      point(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
       //point(dxAxisPoints[i] * xScale ,1);
     }
     endShape();
   }
+}
+
+function calcFxPoint(fxCode, x){
+  let functionCode = fxCode;
+  let scope = { x: x }
+  return functionCode.eval(scope);
 }
 
 function fxChange(){
@@ -146,15 +157,20 @@ function calcDerivada(){
   let x = math.parse('x');        
   derivada = math.derivative(f, x);
   let scope = { x: (mouseX - w/2) / xScaleSlide.value()}
-  fDerivadaCode = derivada.compile();
-  y = fDerivadaCode.eval(scope)
+  dxCode = derivada.compile();
+  y = dxCode.eval(scope)
   print(y);
 }
 
+
+//Exibir o resultado da função matematica onde o mouse clicou por ultimo
+let clickFx = "";
+let clickDx = "";
 function mouseReleased(){
   x = (mouseX - w/2) / xScaleSlide.value();
   let scope = {x:x}
   y = fxCode.eval(scope);
-  textSize(10);
   clickFx = `f(${x}) = ${y}`;
+  y = dxCode.eval(scope);
+  clickDx = `f'(${x}) = ${y}`
 }
