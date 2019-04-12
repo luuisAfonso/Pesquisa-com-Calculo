@@ -38,10 +38,14 @@ function setup() {
   derivadaCheck.changed(derivadaCheckChange);
   fxInput = createInput(fx);
   fxInput.input(fxChange);
+  calcDerivada();
   translate(w / 2, h / 2);
 }
 
 function drawGraph(){
+  //set para as configurações visuais do grafico
+  stroke(1)   //vermelha
+  strokeWeight(0.4)
   textSize(5.8);
   fill(0);
   line(-w / 2, 0, w / 2, 0);
@@ -69,13 +73,8 @@ function draw() {
   //try and catch para capturar erros de parse na função.
   try {
     fxNode = math.parse(fx);
-  } catch (e) {
-    console.log(e)
-  }
-  try {
     fxCode = fxNode.compile();
   } catch (e) {
-    console.log(e)
   }
   //calculo da função comum
     if (xAxisPoints.length <= 10000) {
@@ -91,6 +90,7 @@ function draw() {
       yAxisPoints.push(y);
     }
   }
+  strokeWeight(1);
   beginShape();
   noFill();
   for (let i = 0; i < xAxisPoints.length; i++) {
@@ -115,6 +115,7 @@ function draw() {
       dyAxisPoints.push(dy);
     }
   }
+  stroke(255,0,0);
   if (drawDerivada == true) {
     beginShape();
     noFill();
@@ -123,7 +124,6 @@ function draw() {
       yScale = yScaleSlide.value();
       vertex(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
       //point(dxAxisPoints[i] * xScale, -dyAxisPoints[i] * yScale);
-      //point(dxAxisPoints[i] * xScale ,1);
     }
     endShape();
   }
