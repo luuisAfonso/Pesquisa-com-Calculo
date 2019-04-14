@@ -17,6 +17,8 @@ let dx = dxI;
 let dy = 0;
 let drawDerivada = false;
 let derivadaCheck;
+let graph1;
+let func1;
 
 xAxisPoints = [];
 yAxisPoints = [];
@@ -32,6 +34,9 @@ dyAxisPoints = [];
 
 function setup() {
   createCanvas(w,h);
+  graph1 = new Graphic();
+  func1 = new GraphicLine("sin(x)^tan(1)", graph1);
+  func1 = new GraphicLine("x^tan(x)", graph1, color(255,0,0));
   xScaleSlide = createSlider(0, 200, 10, .001);
   yScaleSlide = createSlider(0, 200, 10, .001);
   derivadaCheck = createCheckbox('Desenhar derivada', false);
@@ -43,67 +48,18 @@ function setup() {
 }
 
 function drawGraph(){
-  //set para as configurações visuais do grafico
-  stroke(1)   //vermelha
-  strokeWeight(0.4)
-  textSize(5.8);
   fill(0);
-  line(-w / 2, 0, w / 2, 0);
-  for(let i = -(w/2); i < w/2; i += (20 / xScaleSlide.value())){
-    text(i.toFixed(1), i * xScaleSlide.value(), 0); 
-  }
-  line(0, -h / 2, 0, h / 2);
-  for(let i = -(h/2); i < h/2; i += (20 / yScaleSlide.value())){
-    text(-i.toFixed(1), 0, i * yScaleSlide.value()); 
-  }
-  textSize(10);
-  text("y", 10, -(h * .92)/2);
-  text("x", (w * .92)/2,10);
-  text(fx,-(w/2 * .9) ,-(h/2 * .83));
-  text(clickFx,-(w/2 * .9),-(h/2 * .76));
-  text(`f'(x) = ${derivada}`,-(w/2 * .9),-(h/2 * .69) )
-  text(clickDx,-(w/2 * .9),-(h/2 * .62));
+  graph1.Draw();
+  graph1.SetScale(xScaleSlide.value(),yScaleSlide.value());
 }
 
 function draw() {
   translate(w / 2, h / 2);
   background(144);
   drawGraph();
-  //parse da string --> node(math) --> code, posteriormente executado.
-  //try and catch para capturar erros de parse na função.
-  try {
-    fxNode = math.parse(fx);
-    fxCode = fxNode.compile();
-  } catch (e) {
-  }
-  //calculo da função comum
-    if (xAxisPoints.length <= 10000) {
-    for (let i = 0; i < 200; i++) {
-      try{
-        y = calcFxPoint(fxCode, x)
-      }
-      catch(e){
-        fx = "Texto não pode ser convertido em função!"
-      }
-      x += timeStep;
-      xAxisPoints.push(x);
-      yAxisPoints.push(y);
-    }
-  }
-  strokeWeight(1);
-  beginShape();
-  noFill();
-  for (let i = 0; i < xAxisPoints.length; i++) {
-    xScale = xScaleSlide.value();
-    yScale = yScaleSlide.value();
-    vertex(xAxisPoints[i] * xScale, -yAxisPoints[i] * yScale);
-   //point(xAxisPoints[i] * xScale, -yAxisPoints[i] * yScale);
-  }
-  endShape();
-
   //calculo da derivada
   if (dxAxisPoints.length <= 10000) {
-    print(dxAxisPoints.length);
+    //print(dxAxisPoints.length);
     for (let i = 0; i < 200; i++) {
       try {
         dy = calcFxPoint(dxCode, dx);
@@ -159,7 +115,7 @@ function calcDerivada(){
   let scope = { x: (mouseX - w/2) / xScaleSlide.value()}
   dxCode = derivada.compile();
   y = dxCode.eval(scope)
-  print(y);
+  //print(y);
 }
 
 
