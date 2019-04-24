@@ -39,7 +39,7 @@ class GraphicLine{
                 try {
                     y = calcFxPoint(this.fxCode, x)
                 } catch (e) {
-                    fx = "Texto não pode ser convertido em função!"
+                    throw new SyntaxError("Texto não pode ser convertido em função!");
                 }
                 x += timeStep;
                 this.xAxisPoints.push(x);
@@ -49,6 +49,9 @@ class GraphicLine{
 
     }
     
+
+    /*TODO, fazer dar valor f(x) apartir da posição do click do mouse*/
+
     Draw(){
         strokeWeight(1);
         beginShape();
@@ -69,5 +72,9 @@ class GraphicLine{
     SetScale(xScale, yScale){
         this.xScale = xScale;
         this.yScale = yScale;
+    }
+
+    ChangeFx(fx){
+        this.fx = fx;
     }
 }
