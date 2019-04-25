@@ -33,10 +33,17 @@ dyAxisPoints = [];
 
 
 function setup() {
-  createCanvas(w,h);
+  var canvas = createCanvas(w,h);
+  canvas.parent("sketch-holder")
   graph1 = new Graphic();
+<<<<<<< HEAD
   func1 = new GraphicLine("x-3", graph1);
   func1 = new GraphicLine("9 - 2*x", graph1, color(255,0,0));
+=======
+  func1 = new GraphicLine("sin(x)", graph1);
+  func2 = new GraphicLine("x^2", graph1, color(255,0,0));
+  func3 = new GraphicLine("x^atan(x)", graph1,color(0,0,255));
+>>>>>>> 38e6f7680aedd95134be9f197803cd0d335db0d1
   xScaleSlide = createSlider(0, 200, 10, .001);
   yScaleSlide = createSlider(0, 200, 10, .001);
   derivadaCheck = createCheckbox('Desenhar derivada', false);
@@ -92,16 +99,7 @@ function calcFxPoint(fxCode, x){
 }
 
 function fxChange(){
-  fx = this.value();
-  x = xI;
-  y = 0;
-  dx = dxI;
-  dy = 0;
-  xAxisPoints = [];
-  yAxisPoints = [];
-  dxAxisPoints = [];
-  dyAxisPoints = [];
-  calcDerivada();
+  func1.ChangeFx(this.value());
 }
 
 function derivadaCheckChange(){
