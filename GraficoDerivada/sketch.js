@@ -35,8 +35,8 @@ dyAxisPoints = [];
 function setup() {
   createCanvas(w,h);
   graph1 = new Graphic();
-  func1 = new GraphicLine("sin(x)^tan(1)", graph1);
-  func1 = new GraphicLine("x^tan(x)", graph1, color(255,0,0));
+  func1 = new GraphicLine("x-3", graph1);
+  func1 = new GraphicLine("9 - 2*x", graph1, color(255,0,0));
   xScaleSlide = createSlider(0, 200, 10, .001);
   yScaleSlide = createSlider(0, 200, 10, .001);
   derivadaCheck = createCheckbox('Desenhar derivada', false);
