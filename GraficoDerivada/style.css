@@ -5,9 +5,20 @@ html, body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: lightblue;
     text-align: center;
+    font-size: 28px;
+}
+.input{
+    width: 13%;
+    height: 25px;
+    font-size:23px;
+    
 }
 section > h1{
     flex-direction: row;
+    font-size: 45px;
     background-color: azure;
     align-content: center;
+    border: solid black 1px;
+    margin: 20px 8em;
+    box-sizing: border-box;
 }

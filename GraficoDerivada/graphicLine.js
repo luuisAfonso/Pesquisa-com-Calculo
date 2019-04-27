@@ -1,4 +1,10 @@
 class GraphicLine{
+    /**
+     * F(x), linha no grafico
+     * @param {*} fx função f(x)
+     * @param {*} graphic Grafico para f(x)
+     * @param {*} color Cor da linha
+     */
     constructor(fx, graphic, color){
         this.fx = fx;
         this.graphic = graphic;
@@ -37,23 +43,27 @@ class GraphicLine{
         if (steps < Infinity) {
             for (let i = 0; i < steps; i++) {
                 try {
-                    y = calcFxPoint(this.fxCode, x)
+                    y = calcFxPoint(this.fxCode, x);              
                 } catch (e) {
-                    throw new SyntaxError("Texto não pode ser convertido em função!");
+                    break;
+                } finally{
+                    x += timeStep;
+                    this.xAxisPoints.push(x);
+                    this.yAxisPoints.push(y);
                 }
-                x += timeStep;
-                this.xAxisPoints.push(x);
-                this.yAxisPoints.push(y);
             }
         }
 
     }
     
 
-    /*TODO, fazer dar valor f(x) apartir da posição do click do mouse*/
+    /*TODO, dar valor f(x) apartir da posição do click do mouse*/
 
+    /**
+     * Desenha linha relacionada a certo grafico
+     */
     Draw(){
-        strokeWeight(1);
+        strokeWeight(1.5);
         beginShape();
         noFill();
         stroke(this.color)

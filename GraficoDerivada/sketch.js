@@ -1,6 +1,6 @@
 
-let w = 600;
-let h = 400;
+let w = (window.innerWidth * .80);
+let h = (window.innerHeight * .70);
 let xScaleSlide;
 let yScaleSlide;
 let fxInput;
@@ -37,15 +37,13 @@ function setup() {
   canvas.parent("sketch-holder")
   graph1 = new Graphic();
   func1 = new GraphicLine("sin(x)", graph1);
-  func2 = new GraphicLine("x^2", graph1, color(255,0,0));
-  func3 = new GraphicLine("x^atan(x)", graph1,color(0,0,255));
   xScaleSlide = createSlider(0, 200, 10, .001);
   yScaleSlide = createSlider(0, 200, 10, .001);
   derivadaCheck = createCheckbox('Desenhar derivada', false);
   derivadaCheck.changed(derivadaCheckChange);
-  fxInput = createInput(fx);
-  fxInput.input(fxChange);
-  calcDerivada();
+  //Codigo em manutenção
+  //função de calculo da derivada para qualquer linha do grafico
+  //log(calcDerivada(func1));
   translate(w / 2, h / 2);
 }
 
@@ -93,33 +91,33 @@ function calcFxPoint(fxCode, x){
   return functionCode.eval(scope);
 }
 
-function fxChange(){
-  func1.ChangeFx(this.value());
+function fxInputChange(){
+  let element = document.getElementById("fxinput")
+  func1.ChangeFx(element.value);
 }
 
 function derivadaCheckChange(){
-    drawDerivada = !drawDerivada;
+  drawDerivada = !drawDerivada;
 }
 
-function calcDerivada(){
-  let f = math.parse(fx);
-  let x = math.parse('x');        
-  derivada = math.derivative(f, x);
-  let scope = { x: (mouseX - w/2) / xScaleSlide.value()}
-  dxCode = derivada.compile();
-  y = dxCode.eval(scope)
-  //print(y);
+//TODO função para calcular derivada de qualquer linha do grafico
+function calcDerivada(GraphicLine){
+  let dfx = math.derivative(GraphicLine.fx, x);
+  return dfx;
 }
 
 
 //Exibir o resultado da função matematica onde o mouse clicou por ultimo
-let clickFx = "";
-let clickDx = "";
-function mouseReleased(){
-  x = (mouseX - w/2) / xScaleSlide.value();
-  let scope = {x:x}
-  y = fxCode.eval(scope);
-  clickFx = `f(${x}) = ${y}`;
-  y = dxCode.eval(scope);
-  clickDx = `f'(${x}) = ${y}`
-}
+/*
+não esta funciando, por enquanto
+*/
+// let clickFx = "";
+// let clickDx = "";
+// function mouseReleased(){
+//   x = (mouseX - w/2) / xScaleSlide.value();
+//   let scope = {x:x}
+//   y = fxCode.eval(scope);
+//   clickFx = `f(${x}) = ${y}`;
+//   y = dxCode.eval(scope);
+//   clickDx = `f'(${x}) = ${y}`
+// }
